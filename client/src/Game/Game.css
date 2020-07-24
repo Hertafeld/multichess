@@ -1,0 +1,12 @@
+.SubgameTiles {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	width: 100%;
+}
+
+.SubgameTile {
+	border: 10px solid #000000;
+	margin: 10px;
+	padding: 10px;
+}

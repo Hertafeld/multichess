@@ -1,0 +1,73 @@
+.GameScoreboard {
+	positon: relative;
+	width: 100%;
+}
+
+.GameScoreboardBar {
+	border: 3px solid #888;
+	border-radius: 50px;
+	padding: 10px;
+	background-color: #888;
+	width: 80%;
+	margin: 0 auto;
+	position: relative;
+	display: flex;
+	flex-direction: row;
+    justify-content: center;
+
+	align-items: center;
+}
+
+.Score {
+	height: 60%;
+	border-radius: 50px;
+	position: absolute;
+}
+
+.BlackScore {
+	background-color: black;
+	right: 0;
+	top: 20%;
+	z-index: 1;
+}
+
+.WhiteScore {
+	background-color: white;
+	left: 0;
+	top: 20%;
+	z-index: 1;
+}
+
+.DrawScore {
+	height: 100%;
+	top: 0;
+	background-color: red;
+}
+
+.GameScoreboardLabels {
+	display: flex;
+	flex-direction: row;
+    justify-content: center;
+	align-items: center;
+	width: 80%;
+	margin: 0 auto;
+	height: 30px;
+	position: relative;
+}
+
+.ScoreLabel {
+	position: absolute;
+}
+.BlackScoreLabel {
+	right: 0;
+	top: 0;
+}
+
+.WhiteScoreLabel {
+	left: 0;
+	top: 0;
+}
+
+.DrawScoreLabel {
+	top: 0;
+}

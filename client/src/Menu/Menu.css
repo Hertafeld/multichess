@@ -1,0 +1,27 @@
+.Menu {
+	margin: 20px auto;
+	padding: 5px;
+	border: 2px solid black;
+	width: 50%;
+}
+
+.Menu button {
+	padding: 5px;
+	border-radius: 50px;
+}
+
+.FileMenu {
+	width: 100%;
+}
+
+.ColorMenu {
+	width: 100%;
+}
+
+.MenuHidden button {
+	padding: 5px;
+	border-radius: 50px;
+}
+.MenuHidden {
+	text-align: left;
+}
