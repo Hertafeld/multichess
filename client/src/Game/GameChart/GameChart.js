@@ -71,7 +71,6 @@ class GameChart extends Component {
 	  	return (
 		  	<div className="GameChart">
 				<div className="GameChartPie">
-					{console.log(data.map(x => x.pattern))}
 					<Chart
 					    options={{
 					    	legend: false,

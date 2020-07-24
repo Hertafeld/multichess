@@ -4,26 +4,9 @@ var router = express.Router();
 const  Game  = require("../models/GameSchema");
 const  connection  = require("../db/connection");
 
-/*
-router.post('/', function(req, resp) {
-	console.log(req.body);
-	const newGame = new Game(req.body);
-	Game.findOne({ id: req.body.id }, (err, gameFound) => {
-		if (gameFound) {
-			gameFound.subgames = newGame.subgames;
-			gameFound.save();
-		} else {
-			newGame.save();
-			console.log("Added game " + newGame.id);
-		}
-	});
-});
-
-module.exports = router;
-*/
-
 let socketHandler = (socket) => {
   console.log("A user connected.");
+
   socket.on('load', (gameId, sendBack) => {
   	let inRoom = false;
   	rooms = Object.keys(socket.rooms);
@@ -62,6 +45,17 @@ let socketHandler = (socket) => {
 		} else {
 			newGame.save();
 			console.log("Added game " + newGame.id);
+		}
+	});
+  });
+
+  socket.on('exists', (gameId, sendBack) => {
+  	Game.findOne({ id: gameId }, (err, gameFound) => {
+		if (err) throw err;
+		if (gameFound){
+			sendBack(true);
+		} else {
+			sendBack(false);
 		}
 	});
   });

@@ -13,14 +13,8 @@ class App extends Component {
 
   state = {
   	playerColor: 'w',
-	subgames: [
-						{game: new Chess(),
-						 weight: 1.0,
-						 angle: 0,
-						 winner: ''
-						}
-					],
-					gameId: '1',
+	subgames: [],
+	gameId: '',
 	error: '',
 	showMenu: true
   }
@@ -31,11 +25,9 @@ class App extends Component {
   componentDidMount() {
 	this.socket = openSocket();
 	this.socket.on('update', subgames => {
-		console.log(subgames);
 		this.setState({
 			subgames: this.unBundleSubgames(subgames)
 		});
-		console.log("Updated!!");
 	});
 	if(this.cookies.get('savedId') && this.cookies.get('savedColor')) {
 		this.loadHandler(this.cookies.get('savedId'), this.cookies.get('savedColor'))();
@@ -54,15 +46,16 @@ class App extends Component {
 	  		this.setState({error: "Specify a game ID to create."});
 	  		return;
 		}
-		axios.get('http://localhost:9000/load', {params: {id: gameId}})
-		  .then( response => {
-		  	if (response.data) {
-		  		this.setState({error: "Game ID already in use."});
-		  		return;
-		  	} else {
+		this.socket.emit('exists', gameId, exists => {
+			if (exists) {
+				this.setState({
+		  			error: 'A game with that ID already exists.',
+				}); 
+				return
+			} else {
 				this.setState({
 					playerColor: playerColor,
-		  			subgames: [
+					subgames: [
 						{game: new Chess(),
 						 weight: 1.0,
 						 angle: 0,
@@ -70,12 +63,14 @@ class App extends Component {
 						}
 					],
 					gameId: gameId,
-					playerColor: playerColor,
 					error: '',
-					showMenu: false
-				});
+					showMenu: true
+				}); 
+				this.cookies.set('savedId', gameId, { path: '/' });
+				this.cookies.set('savedColor', playerColor, { path: '/' });
+				this.saveGame();
 			}
-		})
+		});
 	}
   }
 
@@ -92,7 +87,6 @@ class App extends Component {
   }
 
   saveGame = () => {
-	  console.log("Saving " + this.state.gameId);
 	  this.socket.emit("save", {id: this.state.gameId, subgames: this.bundleSubgames()});
   }
 
@@ -179,7 +173,7 @@ class App extends Component {
   render() {
 	  return (
 	    <div className="App">
-	      <h1>Welcome to Quantum Chess</h1>
+	      <h1>Welcome to MultiChess</h1>
 	      {this.state.gameId !== '' ? (<h3>Game ID: {this.state.gameId}</h3>) : null}
 	      {this.state.error !== '' ? (
 	      	<h2 className="Error">{this.state.error}</h2>

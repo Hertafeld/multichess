@@ -179,7 +179,6 @@ class Subgame extends Component {
     this.setState({
       shouldClone: !this.state.shouldClone
     });
-    console.log("Clone pushed!");
   }
 
   getTileColor = (isDark, isMyTurn) => {
