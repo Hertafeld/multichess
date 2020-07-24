@@ -23,7 +23,8 @@ class App extends Component {
   cookies = new Cookies();
 
   componentDidMount() {
-	this.socket = openSocket();
+
+	this.socket = openSocket(window.location.hostname + ":" + (process.env.PORT || 9000));
 	this.socket.on('update', subgames => {
 		this.setState({
 			subgames: this.unBundleSubgames(subgames)
@@ -32,6 +33,7 @@ class App extends Component {
 	if(this.cookies.get('savedId') && this.cookies.get('savedColor')) {
 		this.loadHandler(this.cookies.get('savedId'), this.cookies.get('savedColor'))();
 	}
+	alert(window.location.hostname + ":" + (process.env.PORT || 9000));
   }
 
   toggleMenuHandler = () => {
