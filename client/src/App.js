@@ -24,7 +24,7 @@ class App extends Component {
 
   componentDidMount() {
 
-	this.socket = openSocket(window.location.hostname + ":" + (process.env.PORT || 9000));
+	this.socket = openSocket('ws://still-bayou-01498.herokuapp.com/socket.io/?EIO=4&transport=websocket');
 	this.socket.on('update', subgames => {
 		this.setState({
 			subgames: this.unBundleSubgames(subgames)
@@ -33,7 +33,6 @@ class App extends Component {
 	if(this.cookies.get('savedId') && this.cookies.get('savedColor')) {
 		this.loadHandler(this.cookies.get('savedId'), this.cookies.get('savedColor'))();
 	}
-	alert(window.location.hostname + ":" + (process.env.PORT || 9000));
   }
 
   toggleMenuHandler = () => {
