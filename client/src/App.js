@@ -24,7 +24,7 @@ class App extends Component {
 
   componentDidMount() {
 
-	this.socket = openSocket('ws://still-bayou-01498.herokuapp.com/socket.io/?EIO=4&transport=websocket');
+	this.socket = openSocket('/');
 	this.socket.on('update', subgames => {
 		this.setState({
 			subgames: this.unBundleSubgames(subgames)
