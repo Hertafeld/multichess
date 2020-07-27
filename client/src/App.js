@@ -3,7 +3,7 @@ import './App.css';
 
 import Chess from "chess.js";
 import axios from "axios";
-import openSocket from 'socket.io-client';
+import io from 'socket.io-client';
 import Cookies from 'universal-cookie';
 
 import Game from './Game/Game';
@@ -24,7 +24,7 @@ class App extends Component {
 
   componentDidMount() {
 
-	this.socket = openSocket('/');
+	this.socket = io();
 	this.socket.on('update', subgames => {
 		this.setState({
 			subgames: this.unBundleSubgames(subgames)
@@ -111,8 +111,14 @@ class App extends Component {
 	  		this.setState({error: "Specify a game ID to load."});
 	  		return;
 		}
-		this.socket.emit('load', gameId, subgames => {
-			if (subgames) {
+		this.socket.emit('load', gameId, (subgames, err) => {
+			if (err){
+				console.log(err);
+				this.setState({
+		  			error: err,
+				});
+			}
+			else if (subgames) {
 				this.setState({
 					subgames: this.unBundleSubgames(subgames),
 		  			gameId: gameId,

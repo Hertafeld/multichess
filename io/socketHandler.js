@@ -26,18 +26,24 @@ let socketHandler = (socket) => {
   	}
 
   	Game.findOne({ id: gameId }, (err, gameFound) => {
-		if (err) throw err;
+		if (err) {
+			sendBack(null, err)
+			throw err;
+		}
 		console.log("Sending game " + gameId);
 		console.log(gameFound);
-		sendBack(gameFound.subgames);
+		sendBack(gameFound.subgames, null);
 	});
   });
 
-  socket.on('save', game => {
+  socket.on('save', (game, sendBack) => {
 	const newGame = new Game(game);
 	socket.to(game.id).emit('update', game.subgames);
 	Game.findOne({ id: game.id }, (err, gameFound) => {
-		if (err) throw err;
+		if (err) {
+			sendBack(err);
+			throw err;
+		} 
 		if (gameFound) {
 			gameFound.subgames = newGame.subgames;
 			gameFound.save();
@@ -51,11 +57,13 @@ let socketHandler = (socket) => {
 
   socket.on('exists', (gameId, sendBack) => {
   	Game.findOne({ id: gameId }, (err, gameFound) => {
-		if (err) throw err;
-		if (gameFound){
-			sendBack(true);
+		if (err){
+		 throw err;
+		 sendBack(null, err);
+		} if (gameFound){
+			sendBack(true, null);
 		} else {
-			sendBack(false);
+			sendBack(false, null);
 		}
 	});
   });
