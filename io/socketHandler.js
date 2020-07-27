@@ -27,8 +27,9 @@ let socketHandler = (socket) => {
 
   	Game.findOne({ id: gameId }, (err, gameFound) => {
 		if (err) {
-			sendBack(null, err)
-			throw err;
+			sendBack(null, err);
+			console.log(err);
+			return;
 		}
 		console.log("Sending game " + gameId);
 		console.log(gameFound);
@@ -42,7 +43,8 @@ let socketHandler = (socket) => {
 	Game.findOne({ id: game.id }, (err, gameFound) => {
 		if (err) {
 			sendBack(err);
-			throw err;
+			console.log(err);
+			return;
 		} 
 		if (gameFound) {
 			gameFound.subgames = newGame.subgames;
@@ -58,9 +60,11 @@ let socketHandler = (socket) => {
   socket.on('exists', (gameId, sendBack) => {
   	Game.findOne({ id: gameId }, (err, gameFound) => {
 		if (err){
-		 throw err;
+		 console.log(err);
 		 sendBack(null, err);
-		} if (gameFound){
+		 return;
+		}
+		if (gameFound){
 			sendBack(true, null);
 		} else {
 			sendBack(false, null);
